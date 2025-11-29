@@ -74,6 +74,12 @@ export function LoginForm({ className, ...props }: React.ComponentProps<"div">) 
     }
   }
 
+  async function loginWithOAuth(provider: string){
+    await signIn.social({
+      provider: provider
+    })
+  }
+
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Card>
@@ -116,8 +122,11 @@ export function LoginForm({ className, ...props }: React.ComponentProps<"div">) 
 
               <Field>
                 <Button type="submit" disabled={isPending}>Login</Button>
-                <Button variant="outline" type="button" disabled={isPending}>
+                <Button variant="outline" type="button" disabled={isPending} onClick={()=>loginWithOAuth("google")}>
                   Login with Google
+                </Button>
+                <Button variant="outline" type="button" disabled={isPending} onClick={()=>loginWithOAuth("github")}>
+                  Login with Github
                 </Button>
                 <FieldDescription className="text-center">
                   Don&apos;t have an account? <a href="/auth/signup">Sign up</a>

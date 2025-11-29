@@ -27,7 +27,7 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { signUp } from "@/lib/auth-client";
+import { signIn, signUp } from "@/lib/auth-client";
 import { toast } from "sonner";
 
 
@@ -74,13 +74,20 @@ export function SignupForm({ ...props }: React.ComponentProps<"div">) {
       },
       onSuccess: ()=>{
         router.push("/auth/login")
-        toast.success("User registered Successfully!")
+        toast.success("User registered Successfully! Please check for verification email.")
       }
     })
     } catch (error) {
       console.log(error)
     }
   }
+
+  async function signUpWithOAuth(provider: string){
+    await signIn.social({
+      provider: provider
+    })
+  }
+
   return (
     <Card {...props}>
       <CardHeader>
@@ -149,8 +156,11 @@ export function SignupForm({ ...props }: React.ComponentProps<"div">) {
               />
                 <Field>
                   <Button type="submit" disabled={isPending}>Create Account</Button>
-                  <Button variant="outline" type="button" disabled={isPending}>
+                  <Button variant="outline" type="button" disabled={isPending} onClick={()=>signUpWithOAuth("google")}>
                     Sign up with Google
+                  </Button>
+                  <Button variant="outline" type="button" disabled={isPending} onClick={()=>signUpWithOAuth("github")}>
+                    Sign up with Github
                   </Button>
                   <FieldDescription className="px-6 text-center">
                     Already have an account? <a href="/auth/login">Sign in</a>

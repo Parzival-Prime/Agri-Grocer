@@ -2,6 +2,8 @@ import { betterAuth } from "better-auth";
 import {prismaAdapter} from "better-auth/adapters/prisma"
 import { prisma } from "@/lib/prisma";
 import { hashPassword, verifyPassword } from "@/lib/argon2";
+import { sendPasswordResetEmail, sendVerificationEmailFunction } from "@/lib/resend";
+import { toast } from "sonner";
 
 export const auth = betterAuth({
   database: prismaAdapter(prisma, {
@@ -14,6 +16,29 @@ export const auth = betterAuth({
     password: {
       hash: hashPassword,
       verify: verifyPassword
+    },
+    sendResetPassword: sendPasswordResetEmail
+  },
+
+  emailVerification: {
+    sendVerificationEmail: sendVerificationEmailFunction,
+    sendOnSignUp: true,
+    autoSignInAfterVerification: true,
+    async afterEmailVerification(user, request){
+      toast.success("User verified Successfully!")
+      console.log("User Verified Successfully!")
+    }
+  },
+
+  socialProviders: {
+    google: {
+      prompt: "select_account",
+      clientId: process.env.GOOGLE_CLIENT_ID as string,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
+    },
+    github: {
+      clientId: process.env.GITHUB_CLIENT_ID as string,
+      clientSecret: process.env.GITHUB_CLIENT_SECRET as string,
     }
   },
 
