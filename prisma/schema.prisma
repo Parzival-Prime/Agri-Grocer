@@ -42,12 +42,14 @@ model User {
 }
 
 model CustomerProfile {
-  id     String @id @default(uuid())
-  user   User   @relation(fields: [userId], references: [id])
-  userId String @unique
+  id        String @id @default(uuid())
+  user      User   @relation(fields: [userId], references: [id])
+  userId    String @unique
 
-  address  String?
-  phone    String?
+  dob      DateTime
+  pincode  Int
+  address  String
+  phone    Int
   wishlist Json?
   ratings  Rating[]
 }
