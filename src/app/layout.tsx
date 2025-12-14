@@ -3,6 +3,10 @@ import { ThemeProvider } from "@/components/theme-provider";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { ThemeToaster } from "@/components/theme-toaster";
+import { ImageKitProvider } from "@imagekit/next";
+
+
+const urlEndPoint = process.env.NEXT_PUBLIC_IMAGEKIT_ENDPOINT!
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -35,8 +39,10 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <ThemeToaster />
-          {children}
+          <ImageKitProvider urlEndpoint={urlEndPoint}>
+            <ThemeToaster />
+            {children}
+          </ImageKitProvider>
         </ThemeProvider>
       </body>
     </html>

@@ -29,6 +29,12 @@ export default async function page() {
             <Button size="sm" asChild>
               <Link href={"/auth/login"}>SignIn</Link>
             </Button>
+            <Button size="sm" asChild>
+              <Link href={"/seller/dashboard"}>Seller Dashboard</Link>
+            </Button>
+            <Button size="sm" asChild>
+              <Link href={"/products"}>All Products</Link>
+            </Button>
           </div>
         </>
       )}

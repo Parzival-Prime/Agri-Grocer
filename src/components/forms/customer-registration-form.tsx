@@ -71,7 +71,7 @@ export default function CustomerRegistration() {
                     onSubmit={form.handleSubmit(onSubmit)}
                     className="space-y-7"
                   >
-                    <FormField
+                    {/* <FormField
                       control={form.control}
                       name="dob"
                       render={({ field }) => (
@@ -84,21 +84,7 @@ export default function CustomerRegistration() {
                         </FormItem>
                       )}
                     />
-    
-                    <FormField
-                      control={form.control}
-                      name="pincode"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Pincode</FormLabel>
-                          <FormControl>
-                            <Input placeholder="000000" {...field} />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-    
+     */}
                     <FormField
                       control={form.control}
                       name="address"
@@ -107,20 +93,6 @@ export default function CustomerRegistration() {
                           <FormLabel>Address</FormLabel>
                           <FormControl>
                             <Input placeholder="your address" {...field} />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-    
-                    <FormField
-                      control={form.control}
-                      name="phone"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Phone Number</FormLabel>
-                          <FormControl>
-                            <Input placeholder="+91 0000 000 000" {...field} />
                           </FormControl>
                           <FormMessage />
                         </FormItem>

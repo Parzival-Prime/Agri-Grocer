@@ -1,11 +1,8 @@
-
 import { Button } from "@/components/ui/button";
+import { Role } from "@/generated/prisma/enums";
+import { SignupStage2Props } from "@/types/auth.types";
 
-type Props = {
-  getRole: (value: "seller" | "customer" | null)=>void;
-};
-
-export default function SignUpStage2({ getRole }: Props) {
+export default function SignUpStage2({ form, nextStage }: SignupStage2Props) {
   return (
     <div className="grid min-h-svh lg:grid-cols-2">
       <div className="flex flex-col gap-4 p-6 md:p-10">
@@ -25,12 +22,26 @@ export default function SignUpStage2({ getRole }: Props) {
               </h1>
             </div>
 
-
-              <div className="flex flex-col items-center space-y-5 w-80">
-                <Button className="w-32" onClick={()=>getRole("customer")}>Customer</Button>
-                <Button className="w-32" onClick={()=>getRole("seller")}>Seller</Button>
-              </div>
-
+            <div className="flex flex-col items-center space-y-5 w-80">
+              <Button
+                className="w-32"
+                onClick={() => {
+                  form.setValue("role", Role.Customer, { shouldValidate: true });
+                  nextStage("stage-2", "stage-3");
+                }}
+              >
+                Customer
+              </Button>
+              <Button
+                className="w-32"
+                onClick={() => {
+                  form.setValue("role", Role.Seller, { shouldValidate: true });
+                  nextStage("stage-2", "stage-3");
+                }}
+              >
+                Seller
+              </Button>
+            </div>
           </div>
         </div>
       </div>

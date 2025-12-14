@@ -6,7 +6,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Field, FieldDescription } from "@/components/ui/field";
+import { Field } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 
 import {
@@ -16,40 +16,16 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
-import { z } from "zod";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useState } from "react";
-import DatePicker from "@/components/date-picker";
+} from "@/components/ui/form"
+import { SignupStage3Props } from "@/types/auth.types";
 
-const formSchema = z.object({
-  dob: z.date(),
-  pincode: z.number(),
-  address: z.string(),
-  phone: z.number(),
-});
 
-export default function SellerRegistration() {
-  const [date, setDate] = useState<Date | undefined>(new Date("2025-06-01"));
-  const [isPending, setIsPending] = useState(false);
-
-  const handleSetDate = (date: Date | undefined) => {
-    setDate(date);
-  };
-
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      dob: new Date(),
-      pincode: 0o0,
-      address: "",
-      phone: 0o0,
-    },
-  });
-
-  async function onSubmit(values: z.infer<typeof formSchema>) {}
-
+export default function SellerRegistration({form, nextStage, isPending }: SignupStage3Props) {
+  function handleClick(e: React.MouseEvent){
+    e.preventDefault()
+    // console.log("clicked")
+    nextStage("stage-3", "stage-3")
+  }
   return (
     <div className="flex min-h-svh w-full items-center justify-center p-6 md:p-10">
       <div className="w-full max-w-sm">
@@ -60,69 +36,30 @@ export default function SellerRegistration() {
               Enter your information below to create your account
             </CardDescription>
           </CardHeader>
-          <CardContent>
+          <CardContent>            
             <Form {...form}>
               <form
-                onSubmit={form.handleSubmit(onSubmit)}
+                // onSubmit={form.handleSubmit()}
                 className="space-y-7"
               >
-                <FormField
-                  control={form.control}
-                  name="dob"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Date Of Birth</FormLabel>
-                      <FormControl>
-                        <DatePicker date={date} setDate={handleSetDate} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
 
                 <FormField
                   control={form.control}
-                  name="pincode"
+                  name="sellerProfile.storeName"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Pincode</FormLabel>
+                      <FormLabel>Store Name</FormLabel>
                       <FormControl>
-                        <Input placeholder="000000" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                <FormField
-                  control={form.control}
-                  name="address"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Address</FormLabel>
-                      <FormControl>
-                        <Input placeholder="your address" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                <FormField
-                  control={form.control}
-                  name="phone"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Phone Number</FormLabel>
-                      <FormControl>
-                        <Input placeholder="+91 0000 000 000" {...field} />
+                        <Input placeholder="your Store's Name" {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
                   )}
                 />
                 <Field>
-                  <Button type="submit" disabled={isPending}>
+                  <Button type="submit" disabled={isPending || form.watch("role") !== "Seller"}
+                  onClick={handleClick}
+                  >
                     Register
                   </Button>
                 </Field>

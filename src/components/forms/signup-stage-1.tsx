@@ -17,38 +17,19 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { UseFormReturn } from "react-hook-form";
+import { SignupStage1Props } from "@/types/auth.types";
 
-interface SignupStage1Props {
-  form: UseFormReturn<{
-      name: string;
-      email: string;
-      password: string;
-      confirmPassword: string;
-    },
-    any,
-    {
-      name: string;
-      email: string;
-      password: string;
-      confirmPassword: string;
-    }>,
-
-onSubmit: (values: {
-    name: string;
-    email: string;
-    password: string;
-    confirmPassword: string;
-}) => Promise<void>,
-
-isPending: boolean,
-
-signUpWithOAuth: (provider: string) => Promise<void>,
-
-props: {}
-}
-
-export default function SignupStage1({ form, onSubmit, isPending, signUpWithOAuth, ...props }: SignupStage1Props) {
+export default function SignupStage1({
+  form,
+  nextStage,
+  isPending,
+  ...props
+}: SignupStage1Props) {
+  function handleClick(e: React.MouseEvent){
+    e.preventDefault()
+    console.log("clicked")
+    nextStage("stage-1", "stage-2")
+  }
   return (
     <div className="flex min-h-svh w-full items-center justify-center p-6 md:p-10">
       <div className="w-full max-w-sm">
@@ -62,7 +43,9 @@ export default function SignupStage1({ form, onSubmit, isPending, signUpWithOAut
           <CardContent>
             <Form {...form}>
               <form
-                onSubmit={form.handleSubmit(onSubmit)}
+                // onSubmit={form.handleSubmit(() => {
+                //     nextStage("stage-2");
+                // })}
                 className="space-y-7"
               >
                 <FormField
@@ -120,11 +103,39 @@ export default function SignupStage1({ form, onSubmit, isPending, signUpWithOAut
                     </FormItem>
                   )}
                 />
+
+                <FormField
+                  control={form.control}
+                  name="phone"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Phone</FormLabel>
+                      <FormControl>
+                        <Input placeholder="+91 000 000 0000" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
                 <Field>
-                  <Button type="submit" disabled={isPending}>
+                  <Button disabled={isPending} onClick={handleClick}>
                     Proceed
                   </Button>
-                  <Button
+                  <FieldDescription className="px-6 text-center">
+                    Already have an account? <a href="/auth/login">Sign in</a>
+                  </FieldDescription>
+                </Field>
+              </form>
+            </Form>
+          </CardContent>
+        </Card>
+      </div>
+    </div>
+  );
+}
+
+{
+  /* <Button
                     variant="outline"
                     type="button"
                     disabled={isPending}
@@ -139,16 +150,5 @@ export default function SignupStage1({ form, onSubmit, isPending, signUpWithOAut
                     onClick={() => signUpWithOAuth("github")}
                   >
                     Sign up with Github
-                  </Button>
-                  <FieldDescription className="px-6 text-center">
-                    Already have an account? <a href="/auth/login">Sign in</a>
-                  </FieldDescription>
-                </Field>
-              </form>
-            </Form>
-          </CardContent>
-        </Card>
-      </div>
-    </div>
-  );
+                  </Button> */
 }
