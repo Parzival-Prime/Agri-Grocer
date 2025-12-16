@@ -1,14 +1,19 @@
 import { betterAuth } from "better-auth";
-import {prismaAdapter} from "better-auth/adapters/prisma"
+import { prismaAdapter } from "better-auth/adapters/prisma";
 import { prisma } from "@/lib/prisma";
 import { hashPassword, verifyPassword } from "@/lib/argon2";
-import { sendPasswordResetEmail, sendVerificationEmailFunction } from "@/lib/resend";
+import {
+  sendPasswordResetEmail,
+  sendVerificationEmail,
+} from "@/lib/resend";
 import { toast } from "sonner";
 import { Role } from "@/generated/prisma/enums";
+import { emailOTP } from "better-auth/plugins";
+
 
 export const auth = betterAuth({
   database: prismaAdapter(prisma, {
-    provider: "postgresql"
+    provider: "postgresql",
   }),
 
   emailAndPassword: {
@@ -16,9 +21,8 @@ export const auth = betterAuth({
     autoSignIn: false,
     password: {
       hash: hashPassword,
-      verify: verifyPassword
+      verify: verifyPassword,
     },
-    sendResetPassword: sendPasswordResetEmail
   },
 
   user: {
@@ -27,23 +31,23 @@ export const auth = betterAuth({
         type: "string",
       },
       role: {
-        type: [Role.Admin, Role.Customer, Role.Seller]
+        type: [Role.Admin, Role.Customer, Role.Seller],
       },
       phone: {
-        type: "string"
-      }
-    }
+        type: "string",
+      },
+    },
   },
 
-  emailVerification: {
-    sendVerificationEmail: sendVerificationEmailFunction,
-    sendOnSignUp: true,
-    autoSignInAfterVerification: true,
-    async afterEmailVerification(user, request){
-      toast.success("User verified Successfully!")
-      console.log("User Verified Successfully!")
-    }
-  },
+  // emailVerification: {
+  //   sendVerificationEmail: sendVerificationEmailFunction,
+  //   sendOnSignUp: true,
+  //   autoSignInAfterVerification: true,
+  //   async afterEmailVerification(user, request) {
+  //     toast.success("User verified Successfully!");
+  //     console.log("User Verified Successfully!");
+  //   },
+  // },
 
   socialProviders: {
     google: {
@@ -54,11 +58,28 @@ export const auth = betterAuth({
     github: {
       clientId: process.env.GITHUB_CLIENT_ID as string,
       clientSecret: process.env.GITHUB_CLIENT_SECRET as string,
-    }
+    },
   },
 
   session: {
-    expiresIn: 10 * 24 * 60 * 60
+    expiresIn: 10 * 24 * 60 * 60,
   },
-  
+
+  plugins: [
+    emailOTP({
+      overrideDefaultEmailVerification: true,
+      otpLength: 6,
+      expiresIn: 300,
+      allowedAttempts: 5,
+      async sendVerificationOTP({ email, otp, type }) {
+        if (type === "sign-in") {
+          sendVerificationEmail({email, otp})
+        } else if (type === "email-verification") {
+          sendVerificationEmail({email, otp})
+        } else {
+          sendPasswordResetEmail({email, otp})
+        }
+      },
+    }),
+  ],
 });

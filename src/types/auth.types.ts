@@ -1,51 +1,9 @@
 import { UseFormReturn } from "react-hook-form";
 import { z } from "zod";
 
-// export const registerSchema = z
-//   .object({
-//     name: z.string(),
-//     email: z.email(),
-//     password: z.string().min(8),
-//     confirmPassword: z.string().min(8),
-//     phone: z.string().min(10).max(10),
-
-//     role: z.enum(["Seller", "Customer"]),
-
-//     sellerProfile: z
-//       .object({
-//         storeName: z.string().min(2),
-//       })
-//       .optional(),
-
-//     customerProfile: z
-//       .object({
-//         address: z.string().min(5),
-//       })
-//       .optional(),
-//   })
-//   .superRefine((data, ctx) => {
-//     if (data.role === "Seller") {
-//       if (!data.sellerProfile?.storeName) {
-//         ctx.addIssue({
-//           path: ["sellerProfile", "storeName"],
-//           message: "Store name is required",
-//           code: "custom",
-//         });
-//       }
-
-//       if (!data.customerProfile?.address) {
-//         ctx.addIssue({
-//           path: ["customerProfile", "address"],
-//           message: "Address is required",
-//           code: "custom",
-//         });
-//       }
-//     }
-//   });
-
 const baseSchema = {
   name: z.string().min(1),
-  email: z.string().email(),
+  email: z.email(),
   password: z.string().min(8),
   confirmPassword: z.string().min(8),
   phone: z.string().min(10),

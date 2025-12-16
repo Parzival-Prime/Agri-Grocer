@@ -1,12 +1,16 @@
+import { sendVerificationOTP } from "@/actions/send-otp.action";
 import { Role } from "@/generated/prisma/enums";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { RegisterFormType } from "@/types/auth.types";
+import { redirect } from "next/navigation";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(request: NextRequest) {
   try {
     const data: RegisterFormType = await request.json();
+
+    // console.log("Data: ", data)
 
     if (
       (data.role === Role.Seller && !data.sellerProfile) ||
@@ -18,7 +22,7 @@ export async function POST(request: NextRequest) {
         },
         { status: 401 }
       );
-    }``
+    }
 
     const { user } = await auth.api.signUpEmail({
       body: {
@@ -88,12 +92,18 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    sendVerificationOTP({ email: user.email, type: "email-verification" });
+    // route.ts - Return success response instead of server redirect
+    const otpUrl = `/otp/verify?type=email-verification&email=${encodeURIComponent(user.email)}`;
 
-    return NextResponse.json({
-      success: true,
-      message: "User created Successfully!"
-    }, {status: 201})
-
+    return NextResponse.json(
+      {
+        success: true,
+        otpUrl, // Client will redirect here
+        message: "Registration successful! Check your email.",
+      },
+      { status: 201 }
+    );
   } catch (error) {
     console.error(error);
     return NextResponse.json(

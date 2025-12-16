@@ -1,11 +1,12 @@
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { ProductData } from "@/types/form.types";
+import { headers } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(request: NextRequest) {
   try {
-    const session = await auth.api.getSession();
+    const session = await auth.api.getSession({headers: await headers()});
 
     if (!session || !session.user) {
       return NextResponse.json(
@@ -19,8 +20,8 @@ export async function POST(request: NextRequest) {
     const data: ProductData = await request.json();
 
     const seller = await prisma.sellerProfile.findUnique({
-      where: { id: session.user.id },
-    });
+      where: { userId: session.user.id },
+    })
 
     if (!seller) {
       return NextResponse.json(
@@ -70,6 +71,6 @@ export async function POST(request: NextRequest) {
     return NextResponse.json(
       { error: "Product creation failed!" },
       { status: 400 }
-    );
+    )
   }
 }

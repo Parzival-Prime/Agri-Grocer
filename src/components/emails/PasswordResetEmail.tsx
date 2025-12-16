@@ -12,13 +12,10 @@ import {
   Text,
   Tailwind,
 } from '@react-email/components';
+import { PasswordResetEmailProps } from '@/types/resend.types';
 
-interface PasswordResetEmailProps {
-    email: string,
-    link: string
-}
 
-export const PasswordResetEmail = ({email, link}: PasswordResetEmailProps) => {
+export const PasswordResetEmail = ({email, otp}: PasswordResetEmailProps) => {
   return (
     <Html lang="en" dir="ltr">
       <Head />
@@ -51,28 +48,22 @@ export const PasswordResetEmail = ({email, link}: PasswordResetEmailProps) => {
               </Text>
               
               <Text className="text-[16px] text-gray-700 mb-6 leading-6">
-                Click the button below to create a new password. This link will expire in 24 hours for your security.
+                Below is your Verification OTP: 
               </Text>
 
               {/* Reset Button */}
               <Section className="text-center mb-8">
                 <Button
-                  href={link}
-                  className="bg-green-600 text-white px-8 py-4 rounded-xl text-[16px] font-semibold no-underline box-border inline-block"
+                  className="bg-green-200 border border-green-500 text-black px-8 py-4 rounded-xl text-[16px] font-semibold no-underline box-border inline-block"
                 >
-                  Reset My Password
+                  <strong>{otp}</strong>
                 </Button>
               </Section>
 
               <Text className="text-[14px] text-gray-600 mb-4 leading-5">
-                If the button doesn't work, you can copy and paste this link into your browser:
+                This otp will expire in 5 minutes for your security.
               </Text>
               
-              <Text className="text-[14px] text-blue-600 mb-6 break-all">
-                <Link href={link} className="text-blue-600 underline">
-                  {link}
-                </Link>
-              </Text>
             </Section>
 
             {/* Security Notice */}
@@ -87,7 +78,7 @@ export const PasswordResetEmail = ({email, link}: PasswordResetEmailProps) => {
                 • Never share your password with anyone
               </Text>
               <Text className="text-[14px] text-orange-700 m-0 leading-5">
-                • This link expires in 24 hours
+                • This otp expires in 5 hours
               </Text>
             </Section>
 

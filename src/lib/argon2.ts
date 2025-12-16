@@ -14,6 +14,6 @@ export async function hashPassword(password: string){
 
 export async function verifyPassword(data: {password: string, hash: string}){
     const {password, hash} = data
-    const result = await verify(password, hash, opts)
+    const result = await verify(hash, password)
     return result
 }

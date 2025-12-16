@@ -1,4 +1,5 @@
 
+import { VerificationEmailProps } from '@/types/resend.types';
 import {
   Body,
   Button,
@@ -14,16 +15,12 @@ import {
 } from '@react-email/components';
 
 
-interface VerificationsEmailProps {
-  email: string
-  link: string
-}
 
-export const VerificationEmail = ({ email, link }:VerificationsEmailProps) => {
+export const VerificationEmail = ({ email, otp }: VerificationEmailProps) => {
 
   return (
     <Html lang="en" dir="ltr">
-      <Preview>Verify your email address to complete your Agri-Grocer account setup</Preview>
+      <Preview>Verification OTP: {otp}</Preview>
       <Tailwind>
         <Head />
         <Body className="bg-gray-100 font-sans py-10">
@@ -37,7 +34,7 @@ export const VerificationEmail = ({ email, link }:VerificationsEmailProps) => {
             {/* Main Content */}
             <Section className="px-8 py-10">
               <Heading className="text-[24px] font-bold text-gray-800 mb-6 text-center">
-                Verify Your Email Address
+                Verify Your Email Address {email}
               </Heading>
               
               <Text className="text-[16px] text-gray-600 mb-6 leading-6">
@@ -46,26 +43,18 @@ export const VerificationEmail = ({ email, link }:VerificationsEmailProps) => {
               
               <Text className="text-[16px] text-gray-600 mb-6 leading-6">
                 To complete your account setup and start exploring our fresh, locally-sourced agricultural products, 
-                please verify your email address [{email}] by clicking the button below:
+                Below is the OTP for Email Verification:
               </Text>
 
               {/* Verification Button */}
               <Section className="text-center mb-8">
                 <Button
-                  href={link}
-                  className="bg-green-600 text-white px-8 py-4 rounded-xl text-[16px] font-semibold no-underline box-border"
+                  className="bg-green-200 border border-green-500 text-black px-8 py-4 rounded-xl text-2xl font-semibold no-underline box-border"
                 >
-                  Verify Email Address
+                  {otp}
                 </Button>
               </Section>
 
-              <Text className="text-[14px] text-gray-500 mb-6 leading-5">
-                If the button doesn't work, you can copy and paste this link into your browser:
-              </Text>
-              
-              <Text className="text-[14px] text-blue-600 mb-8 break-all">
-                {}
-              </Text>
 
               <Hr className="border-gray-200 my-6" />
 
@@ -79,7 +68,7 @@ export const VerificationEmail = ({ email, link }:VerificationsEmailProps) => {
               <Text className="text-[14px] text-gray-600 mb-6 ml-4">• Connect directly with local farmers and suppliers</Text>
 
               <Text className="text-[14px] text-gray-500 leading-5">
-                This verification link will expire in 24 hours for security purposes. If you didn't create an account with Agri-Grocer, 
+                This OTP will expire in 5 minutes for security purposes. If you didn't create an account with Agri-Grocer, 
                 you can safely ignore this email.
               </Text>
             </Section>

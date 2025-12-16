@@ -1,10 +1,9 @@
 "use client";
 
 import { Path, useForm, useWatch } from "react-hook-form";
-import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 import { toast } from "sonner";
 import SignUpStage2 from "@/components/forms/signup-stage-2";
 import CustomerRegistration from "@/components/forms/customer-registration-form";
@@ -17,18 +16,17 @@ export default function Signup() {
   const [stage, setStage] = useState<Stage>("stage-1");
   const router = useRouter();
 
-const form = useForm<RegisterFormType>({
-  resolver: zodResolver(registerSchema),
-  defaultValues: {
-    role: undefined,
-    name: "",
-    email: "",
-    password: "",
-    confirmPassword: "",
-    phone: "",
-  },
-});
-
+  const form = useForm<RegisterFormType>({
+    resolver: zodResolver(registerSchema),
+    defaultValues: {
+      role: undefined,
+      name: "",
+      email: "",
+      password: "",
+      confirmPassword: "",
+      phone: "",
+    },
+  });
 
   const selectedRole = useWatch({
     control: form.control,
@@ -56,8 +54,8 @@ const form = useForm<RegisterFormType>({
   }
 
   const nextStage = async (cstage: Stage, nStage: Stage) => {
-    const fields = getStepFields(cstage)
-    const isValid = await form.trigger(fields)
+    const fields = getStepFields(cstage);
+    const isValid = await form.trigger(fields);
     if (isValid) {
       if (cstage === "stage-3") {
         console.log("trigger form submission");
@@ -69,10 +67,10 @@ const form = useForm<RegisterFormType>({
           (errors) => {
             console.log("SUBMIT ERRORS:", errors);
           }
-        )()
+        )();
         return;
       }
-      setStage(nStage)
+      setStage(nStage);
     }
   };
 
@@ -92,8 +90,8 @@ const form = useForm<RegisterFormType>({
       }).then((res) => res.json());
 
       if (res?.success) {
-        toast.success("User registered sussefully!");
-        console.log("Registration response: ", res)
+        toast.success("User registered sucessfully! Check email for OTP.")
+        router.push(res.otpUrl)
       } else {
         toast.error("User registration failed!");
       }
@@ -116,7 +114,11 @@ const form = useForm<RegisterFormType>({
       ) : stage == "stage-2" ? (
         <SignUpStage2 form={form} nextStage={nextStage} />
       ) : selectedRole === "Customer" ? (
-        <CustomerRegistration />
+        <CustomerRegistration
+          form={form}
+          nextStage={nextStage}
+          isPending={isPending}
+        />
       ) : (
         <SellerRegistration
           form={form}
