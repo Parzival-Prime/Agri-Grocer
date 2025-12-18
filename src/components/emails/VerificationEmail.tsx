@@ -20,7 +20,7 @@ export const VerificationEmail = ({ email, otp }: VerificationEmailProps) => {
 
   return (
     <Html lang="en" dir="ltr">
-      <Preview>Verification OTP: {otp}</Preview>
+      <Preview>Verification OTP</Preview>
       <Tailwind>
         <Head />
         <Body className="bg-gray-100 font-sans py-10">
