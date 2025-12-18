@@ -1,6 +1,6 @@
 export interface VerificationEmailProps {
   email: string;
-  otp: string;
+  otp: string[];
 }
 
 export interface PasswordResetEmailProps {

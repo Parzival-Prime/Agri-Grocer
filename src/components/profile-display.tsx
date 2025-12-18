@@ -1,18 +1,19 @@
+"use client"
+
+import { GetSessionType } from '@/types/auth.types'
 import SignOutButton from "@/components/signOutButton";
 import { Button } from "@/components/ui/button";
-import { auth } from "@/lib/auth";
-import { headers } from "next/headers";
 import Link from "next/link";
+import { useEffect, useState } from 'react';
+import { authClient } from '@/lib/auth-client';
 
-export default async function page() {
-  const session = await auth.api.getSession({
-    headers: await headers(),
-  });
+export default function ProfileDisplay({initialSession}: {initialSession: GetSessionType}) {
+  const [session, setSession] = useState(initialSession);
+  const [loading, setLoading] = useState(!initialSession);
 
+  if (loading) return <p>Loading session...</p>;
   return (
-    <div className="px-8 py-3 container mx-auto">
-      <h1 className="font-bold text-3xl my-7">Dashboard</h1>
-
+    <div>
       {session ? (
         <>
           <div className="px-8 py-16 space-x-7">
@@ -45,5 +46,7 @@ export default async function page() {
         </>
       )}
     </div>
-  );
+  )
 }
+
+

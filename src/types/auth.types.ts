@@ -31,11 +31,16 @@ export const registerSchema = z.discriminatedUnion("role", [
 export type Stage = "stage-1" | "stage-2" | "stage-3";
 
 export type RegisterFormType = z.infer<typeof registerSchema>;
+export type RegisterRole = RegisterFormType["role"];
+
+export const FORM_ROLES: RegisterRole[] = ["Seller", "Customer"];
+export type FormRole = (typeof FORM_ROLES)[number];
 
 export interface SignupStage1Props {
   form: UseFormReturn<RegisterFormType>;
   nextStage: (cstage: Stage, nStage: Stage) => void;
   isPending: boolean;
+  userExists: boolean
   props?: Record<string, any>;
 }
 
@@ -51,3 +56,50 @@ export interface SignupStage3Props {
   nextStage: (cstage: Stage, nStage: Stage) => void;
   isPending: boolean;
 }
+
+
+
+export type GetSessionType = {
+    session: {
+        id: string;
+        createdAt: Date;
+        updatedAt: Date;
+        userId: string;
+        expiresAt: Date;
+        token: string;
+        ipAddress?: string | null | undefined;
+        userAgent?: string | null | undefined;
+    };
+    user: {
+        id: string;
+        createdAt: Date;
+        updatedAt: Date;
+        email: string;
+        emailVerified: boolean;
+        name: string;
+        image?: string | null | undefined;
+        role: "Admin" | "Seller" | "Customer";
+        phone: string;
+    };
+} | null
+
+
+
+
+export type UserType = {
+        id: string;
+        createdAt: Date;
+        updatedAt: Date;
+        email: string;
+        emailVerified: boolean;
+        name: string;
+        image?: string | null | undefined;
+        role: "Seller" | "Customer" | "Admin";
+        phone: string;
+    }
+
+
+
+
+
+

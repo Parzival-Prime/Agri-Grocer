@@ -35,7 +35,7 @@ export const auth = betterAuth({
       },
       phone: {
         type: "string",
-      },
+      }
     },
   },
 
@@ -73,9 +73,9 @@ export const auth = betterAuth({
       allowedAttempts: 5,
       async sendVerificationOTP({ email, otp, type }) {
         if (type === "sign-in") {
-          sendVerificationEmail({email, otp})
+          sendVerificationEmail({email, otp: otp.split('')})
         } else if (type === "email-verification") {
-          sendVerificationEmail({email, otp})
+          sendVerificationEmail({email, otp: otp.split('')})
         } else {
           sendPasswordResetEmail({email, otp})
         }

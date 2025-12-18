@@ -17,7 +17,7 @@ import {
 } from "@/components/ui/command";
 import { FieldLabel } from "./ui/field";
 import { ProductDataProps, tags } from "@/types/product.types"
-import type { Item } from "@/types/product.types"
+import type { Tag } from "@/types/product.types"
 
 export default function MultiSelect({
   setProductData,
@@ -25,9 +25,9 @@ export default function MultiSelect({
   setProductData: React.Dispatch<React.SetStateAction<ProductDataProps>>
 }) {
   const [open, setOpen] = useState(false)
-  const [selected, setSelected] = useState<Item[]>([])
+  const [selected, setSelected] = useState<Tag[]>([])
 
-  const toggleItem = (item: Item) => {
+  const toggleItem = (item: Tag) => {
     const exists = selected.find((i) => i.value === item.value)
 
     if (exists) {

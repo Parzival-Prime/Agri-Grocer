@@ -23,6 +23,7 @@ export default function SignupStage1({
   form,
   nextStage,
   isPending,
+  userExists,
   ...props
 }: SignupStage1Props) {
   function handleClick(e: React.MouseEvent){
@@ -55,7 +56,7 @@ export default function SignupStage1({
                     <FormItem>
                       <FormLabel>Name</FormLabel>
                       <FormControl>
-                        <Input placeholder="Your Name" {...field} />
+                        <Input placeholder="Your Name" {...field} readOnly={userExists} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -69,7 +70,7 @@ export default function SignupStage1({
                     <FormItem>
                       <FormLabel>Email</FormLabel>
                       <FormControl>
-                        <Input placeholder="m@example.com" {...field} />
+                        <Input placeholder="m@example.com" {...field} readOnly={userExists} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -83,7 +84,7 @@ export default function SignupStage1({
                     <FormItem>
                       <FormLabel>Password</FormLabel>
                       <FormControl>
-                        <Input placeholder="password" {...field} />
+                        <Input placeholder="password" {...field} readOnly={userExists} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -97,7 +98,7 @@ export default function SignupStage1({
                     <FormItem>
                       <FormLabel>Confirm Password</FormLabel>
                       <FormControl>
-                        <Input placeholder="confirm Password" {...field} />
+                        <Input placeholder="confirm Password" {...field} readOnly={userExists} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -111,7 +112,7 @@ export default function SignupStage1({
                     <FormItem>
                       <FormLabel>Phone</FormLabel>
                       <FormControl>
-                        <Input placeholder="+91 000 000 0000" {...field} />
+                        <Input placeholder="+91 000 000 0000" {...field} readOnly={userExists} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>

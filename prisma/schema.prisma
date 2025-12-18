@@ -213,3 +213,140 @@ model Category {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
+
+
+
+
+
+
+
+// model SellerProfile {
+//   id                String   @id @default(cuid())
+
+//   // Relations
+//   userId            String   @unique
+//   user              User     @relation(fields: [userId], references: [id])
+
+//   // Business Identity
+//   shopName          String
+//   shopSlug          String   @unique
+//   description       String?
+//   category          String   // vegetables, fruits, grains, dairy, etc.
+
+//   // Verification
+//   isVerified        Boolean  @default(false)
+//   verificationStatus SellerVerificationStatus @default(PENDING)
+
+//   // Contact
+//   phone             String
+//   email             String?
+//   supportEmail      String?
+
+//   // Address
+//   addressLine1      String
+//   addressLine2      String?
+//   city              String
+//   state             String
+//   country           String
+//   pincode           String
+
+//   // Media
+//   logoUrl           String?
+//   bannerUrl         String?
+
+//   // Business Details
+//   gstNumber         String?
+//   panNumber         String?
+//   licenseNumber     String?
+
+//   // Metrics (derived, cached)
+//   totalProducts     Int      @default(0)
+//   totalOrders       Int      @default(0)
+//   rating            Float    @default(0)
+
+//   // Status
+//   isActive          Boolean  @default(true)
+
+//   createdAt         DateTime @default(now())
+//   updatedAt         DateTime @updatedAt
+// }
+
+// enum SellerVerificationStatus {
+//   PENDING
+//   VERIFIED
+//   REJECTED
+// }
+
+
+// export const sellerProfileSchema = z.object({
+//   shopName: z.string().min(3),
+//   description: z.string().optional(),
+//   category: z.string(),
+
+//   phone: z.string().min(10),
+//   email: z.string().email().optional(),
+
+//   addressLine1: z.string(),
+//   addressLine2: z.string().optional(),
+//   city: z.string(),
+//   state: z.string(),
+//   country: z.string(),
+//   pincode: z.string(),
+
+//   gstNumber: z.string().optional(),
+//   panNumber: z.string().optional(),
+//   licenseNumber: z.string().optional(),
+// });
+
+
+
+// model CustomerProfile {
+//   id                String   @id @default(cuid())
+
+//   // Relations
+//   userId            String   @unique
+//   user              User     @relation(fields: [userId], references: [id])
+
+//   // Personal Info
+//   fullName          String
+//   phone             String
+//   email             String?
+
+//   // Preferences
+//   preferredLanguage String?
+//   notificationOptIn Boolean  @default(true)
+
+//   // Default Address
+//   addressLine1      String
+//   addressLine2      String?
+//   city              String
+//   state             String
+//   country           String
+//   pincode           String
+
+//   // Metrics
+//   totalOrders       Int      @default(0)
+//   totalSpent        Float    @default(0)
+
+//   // Status
+//   isActive          Boolean  @default(true)
+
+//   createdAt         DateTime @default(now())
+//   updatedAt         DateTime @updatedAt
+// }
+
+
+// export const customerProfileSchema = z.object({
+//   fullName: z.string().min(2),
+//   phone: z.string().min(10),
+//   email: z.string().email().optional(),
+
+//   addressLine1: z.string(),
+//   addressLine2: z.string().optional(),
+//   city: z.string(),
+//   state: z.string(),
+//   country: z.string(),
+//   pincode: z.string(),
+
+//   preferredLanguage: z.string().optional(),
+// });

@@ -66,7 +66,7 @@ export default function HeroSection() {
                                     },
                                 },
                             }}
-                            className="mask-b-from-35% mask-b-to-90% absolute inset-0 top-56 -z-20 lg:top-32">
+                            className="mask-b-from-35% mask-b-to-90% absolute inset-0 top-56 -z-20 lg:top-32" children={undefined}>
                             
                         </AnimatedGroup>
 

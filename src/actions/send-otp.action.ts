@@ -152,7 +152,7 @@ export async function verifyOTP(
     switch (type) {
       case "email-verification": {
         await verifyEmailVerificationOTP({ email, otp })
-        redirect("/dashboard") // ✅ relative URL
+        redirect("/profile") // ✅ relative URL
       }
 
       case "sign-in": {
