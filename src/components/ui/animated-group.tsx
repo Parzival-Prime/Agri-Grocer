@@ -1,5 +1,5 @@
 'use client';
-import { ReactNode } from 'react';
+import { JSX, ReactNode } from 'react';
 import { motion, Variants } from 'motion/react';
 import React from 'react';
 
@@ -23,9 +23,10 @@ export type AnimatedGroupProps = {
     item?: Variants;
   };
   preset?: PresetType;
-  as?: React.ElementType;
-  asChild?: React.ElementType;
+  as?: keyof JSX.IntrinsicElements | React.ComponentType<any>;
+  asChild?: keyof JSX.IntrinsicElements | React.ComponentType<any>;
 };
+
 
 const defaultContainerVariants: Variants = {
   visible: {
