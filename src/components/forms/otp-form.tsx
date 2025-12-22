@@ -1,6 +1,6 @@
 "use client"
 
-import { verifyOTP } from "@/actions/send-otp.action"
+// import { verifyOTP } from "@/actions/send-otp.action"
 import { Button } from "@/components/ui/button"
 import {
   Card,
@@ -21,11 +21,58 @@ import {
   InputOTPSlot,
 } from "@/components/ui/input-otp"
 import { OTPFormProps } from "@/types/actions.types"
-import { useActionState } from "react"
+import { authClient } from "@/lib/auth-client"
+import { useRouter } from "next/navigation"
+import { toast } from "sonner"
+import { useState } from "react"
 
 
-export function OTPForm({ email, type, action }: OTPFormProps) {
-  const [state, formAction, isPending] = useActionState(verifyOTP, {error: ''})
+export function OTPForm({ email, type }: OTPFormProps) {
+  const [isPending, setIsPending] = useState(false)
+  const router = useRouter()
+
+  async function verifyOTP(formData: FormData) {
+    const otp = formData.get("otp") as string
+    const email = formData.get("email") as string
+    const type = formData.get("type") as string
+      console.log(otp, email, type)
+
+    if (!otp || !email || !type) {
+      console.log("Missing Valuess")
+    }
+  
+    try {
+      switch (type) {
+        case "email-verification": {
+          await authClient.emailOtp.verifyEmail({ email, otp })
+          router.push("/profile") // ✅ relative URL
+          break
+        }
+  
+        case "sign-in": {
+          await authClient.signIn.emailOtp({ email, otp })
+          router.push("/profile")
+          break
+        }
+  
+        case "reset-password": {
+          await authClient.emailOtp.checkVerificationOtp({ email, type: "forget-password", otp })
+          router.push("/auth/reset-password")
+          break
+        }
+  
+        default:
+          console.log("invalid otp type")
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  if(!type || !email){
+    toast.error("Missing verification details")
+  }
+
   return (
     <Card>
       <CardHeader>
@@ -33,7 +80,7 @@ export function OTPForm({ email, type, action }: OTPFormProps) {
         <CardDescription>We sent a 6-digit code to your email.</CardDescription>
       </CardHeader>
       <CardContent>
-        <form action={formAction}>
+        <form action={verifyOTP}>
           <FieldGroup>
             <input type="hidden" name="email" value={email} />
             <input type="hidden" name="type" value={type} />

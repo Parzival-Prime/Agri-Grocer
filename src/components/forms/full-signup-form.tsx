@@ -15,7 +15,10 @@ export default function FullSignupForm({session}: {session: GetSessionType}) {
   const [isPending, setIsPending] = useState(false);
   const [stage, setStage] = useState<Stage>("stage-1");
   const [userExists, setUserExists] = useState(false)
-  const router = useRouter();
+  const [country, setCountry] = useState("IND")
+  const [state, setState] = useState("")
+  const [haveStates, setHaveStates] = useState(true)
+  const router = useRouter()
 
   const form = useForm<RegisterFormType>({
     resolver: zodResolver(registerSchema),
@@ -46,8 +49,28 @@ export default function FullSignupForm({session}: {session: GetSessionType}) {
 
       case "stage-3":
         return role === "Seller"
-          ? ["sellerProfile.storeName"]
-          : ["customerProfile.address"];
+          ? ["sellerProfile.storeName",
+            "sellerProfile.description",
+            "sellerProfile.niche",
+            "sellerProfile.city",
+            "sellerProfile.country",
+            "sellerProfile.gstNumber",
+            "sellerProfile.licenseNumber",
+            "sellerProfile.panNumber",
+            "sellerProfile.storeAddressLine1",
+            "sellerProfile.pincode",
+            "sellerProfile.state",
+            "sellerProfile.storeAddressLine2",
+            "sellerProfile.supportPhone",
+            "sellerProfile.supportEmail"
+          ]
+          : ["customerProfile.addressLine1",
+            "customerProfile.addressLine2",
+            "customerProfile.city",
+            "customerProfile.country",
+            "customerProfile.pincode",
+            "customerProfile.state",
+          ];
 
       default:
         return [];
@@ -94,7 +117,7 @@ export default function FullSignupForm({session}: {session: GetSessionType}) {
         toast.success("User registered sucessfully! Check email for OTP.")
         router.push(res.otpUrl)
       } else {
-        toast.error("User registration failed!");
+        toast.error(res.message);
       }
     } catch (error) {
       toast.error("User registration failed!");
@@ -113,13 +136,17 @@ export default function FullSignupForm({session}: {session: GetSessionType}) {
   function prefillForm(user: UserType){
     form.setValue("name", user.name)
     form.setValue("email", user.email)
-    form.setValue("password", "******")
-    form.setValue("confirmPassword", "******")
+    form.setValue("password", "********")
+    form.setValue("confirmPassword", "********")
     const formRole = toFormRole(user.role);
     if (formRole !== undefined) {
     form.setValue("role", formRole);
     }
     form.setValue("phone", user.phone)
+  }
+
+  function setCountryFunc(){
+
   }
 
   useEffect(()=>{
@@ -146,12 +173,18 @@ export default function FullSignupForm({session}: {session: GetSessionType}) {
           form={form}
           nextStage={nextStage}
           isPending={isPending}
+          setCountry={setCountryFunc}
+          country={country}
+          haveStates={haveStates}
         />
       ) : (
         <SellerRegistration
           form={form}
           nextStage={nextStage}
           isPending={isPending}
+          setCountry={setCountryFunc}
+          country={country}
+          haveStates={haveStates}
         />
       )}
     </div>

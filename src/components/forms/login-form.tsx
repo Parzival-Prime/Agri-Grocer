@@ -101,7 +101,7 @@ export function LoginForm({
           },
           onSuccess: () => {
             toast.success("Logged In Successfully!");
-            router.push("/dashboard");
+            router.push("/profile");
           },
         }
       );

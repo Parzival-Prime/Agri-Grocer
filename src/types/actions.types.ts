@@ -25,7 +25,7 @@ export interface VerifyPasswordResetOTPProps {
 export interface OTPFormProps {
   email: string
   type: 'email-verification' | 'sign-in' | 'reset-password'
-  action: (prevState: any, formData: FormData) => Promise<{ error?: string }>
+  // action: (prevState: any, formData: FormData) => Promise<{ error?: string }>
 }
 
 
