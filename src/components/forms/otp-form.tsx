@@ -1,76 +1,84 @@
-"use client"
+"use client";
 
 // import { verifyOTP } from "@/actions/send-otp.action"
-import { Button } from "@/components/ui/button"
+import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card"
+} from "@/components/ui/card";
 import {
   Field,
   FieldDescription,
   FieldGroup,
   FieldLabel,
-} from "@/components/ui/field"
+} from "@/components/ui/field";
 import {
   InputOTP,
   InputOTPGroup,
   InputOTPSlot,
-} from "@/components/ui/input-otp"
-import { OTPFormProps } from "@/types/actions.types"
-import { authClient } from "@/lib/auth-client"
-import { useRouter } from "next/navigation"
-import { toast } from "sonner"
-import { useState } from "react"
-
+} from "@/components/ui/input-otp";
+import { OTPFormProps } from "@/types/actions.types";
+import { authClient } from "@/lib/auth-client";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
+import { useState } from "react";
+import { logger } from "@/lib/logger";
 
 export function OTPForm({ email, type }: OTPFormProps) {
-  const [isPending, setIsPending] = useState(false)
-  const router = useRouter()
+  const [isPending, setIsPending] = useState(false);
+  const router = useRouter();
 
   async function verifyOTP(formData: FormData) {
-    const otp = formData.get("otp") as string
-    const email = formData.get("email") as string
-    const type = formData.get("type") as string
-      console.log(otp, email, type)
+    setIsPending(true);
+    logger.info("Verifying otp...");
+    const otp = formData.get("otp") as string;
+    const email = formData.get("email") as string;
+    const type = formData.get("type") as string;
+    logger.info("otp: " + otp + " email: " + email + " type: " + type);
 
     if (!otp || !email || !type) {
-      console.log("Missing Valuess")
+      console.log("Missing Valuess");
     }
-  
+
     try {
       switch (type) {
         case "email-verification": {
-          await authClient.emailOtp.verifyEmail({ email, otp })
-          router.push("/profile") // ✅ relative URL
-          break
+          logger.info("hitting verify email...");
+          await authClient.emailOtp.verifyEmail({ email, otp });
+          logger.info("otp verified going to profile page.");
+          router.push("/profile"); // ✅ relative URL
+          break;
         }
-  
+
         case "sign-in": {
-          await authClient.signIn.emailOtp({ email, otp })
-          router.push("/profile")
-          break
+          logger.info("hitting sign-in with otp...");
+          await authClient.signIn.emailOtp({ email, otp });
+          logger.info("sign-in successful going to profile page.");
+          router.push("/profile");
+          break;
         }
-  
+
         case "reset-password": {
-          await authClient.emailOtp.checkVerificationOtp({ email, type: "forget-password", otp })
-          router.push("/auth/reset-password")
-          break
+          await authClient.emailOtp.checkVerificationOtp({
+            email,
+            type: "forget-password",
+            otp,
+          });
+          router.push("/auth/reset-password");
+          break;
         }
-  
+
         default:
-          console.log("invalid otp type")
+          console.log("invalid otp type");
       }
     } catch (error) {
-      console.log(error)
+      logger.error("some error occured in verifyOTP.");
+    } finally {
+      setIsPending(false);
     }
-  }
-
-  if(!type || !email){
-    toast.error("Missing verification details")
   }
 
   return (
@@ -80,7 +88,13 @@ export function OTPForm({ email, type }: OTPFormProps) {
         <CardDescription>We sent a 6-digit code to your email.</CardDescription>
       </CardHeader>
       <CardContent>
-        <form action={verifyOTP}>
+        <form
+          onSubmit={async (e) => {
+            e.preventDefault();
+            const formData = new FormData(e.currentTarget);
+            await verifyOTP(formData);
+          }}
+        >
           <FieldGroup>
             <input type="hidden" name="email" value={email} />
             <input type="hidden" name="type" value={type} />
@@ -101,7 +115,9 @@ export function OTPForm({ email, type }: OTPFormProps) {
               </FieldDescription>
             </Field>
             <FieldGroup>
-              <Button type="submit" disabled={isPending}>Verify</Button>
+              <Button type="submit" disabled={isPending}>
+                {isPending ? "Verifying..." : "Verify"}
+              </Button>
               <FieldDescription className="text-center">
                 Didn&apos;t receive the code? <a href="#">Resend</a>
               </FieldDescription>
@@ -110,5 +126,5 @@ export function OTPForm({ email, type }: OTPFormProps) {
         </form>
       </CardContent>
     </Card>
-  )
+  );
 }

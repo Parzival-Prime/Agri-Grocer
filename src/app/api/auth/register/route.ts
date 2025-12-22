@@ -325,7 +325,7 @@ export async function POST(request: NextRequest) {
       sendVerificationOTP({ email: user.email, type: "email-verification" });
       const otpUrl = `/otp/verify?type=email-verification&email=${encodeURIComponent(user.email)}`
 
-      logger.error("returning success response...")
+      logger.info("returning success response...")
       return NextResponse.json(
         {
           success: true,
