@@ -251,7 +251,7 @@ export async function registerSeller(req: Request, res: Response, next: NextFunc
         await sendOtp(name, email, "seller-activation-mail")
 
         console.log('otp sent')
-        res.status(200).json({
+        return res.status(200).json({
             message: "OTP sent to Email, Please verify your account."
         })
     } catch (error) {

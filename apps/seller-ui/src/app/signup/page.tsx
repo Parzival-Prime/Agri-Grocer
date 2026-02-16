@@ -368,7 +368,7 @@ export default function page() {
                   Enter verification code
                 </CardTitle>
                 <CardDescription>
-                  We sent a 6-digit code to your email.
+                  We sent a 4-digit code to your email.
                 </CardDescription>
               </CardHeader>
               <CardContent className='w-full '>
@@ -384,13 +384,8 @@ export default function page() {
                           <InputOTPSlot index={1} />
                           <InputOTPSlot index={2} />
                           <InputOTPSlot index={3} />
-                          {/* <InputOTPSlot index={4} />
-                  <InputOTPSlot index={5} /> */}
                         </InputOTPGroup>
                       </InputOTP>
-                      <FieldDescription className="text-center">
-                        Enter the 4-digit code sent to your email.
-                      </FieldDescription>
                     </Field>
                     <Button
                       type="submit"
