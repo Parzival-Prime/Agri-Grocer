@@ -18,7 +18,7 @@ const transporter = nodemailer.createTransport({
 
 const renderEmailTemplate = async(templateName: string, data: Record<string, any>): Promise<string> =>{
     const templatePath = path.resolve(
-    __dirname,
+    process.cwd(),
     "utils",
     "email-templates",
     `${templateName}.ejs`
@@ -32,6 +32,7 @@ const renderEmailTemplate = async(templateName: string, data: Record<string, any
 
 export const sendEmail = async(to: string, subject: string, templateName: string, data: Record<string, any  >) =>{
     try {
+        console.log('inside send mail')
         const html = await renderEmailTemplate(templateName, data)
         await transporter.sendMail({
             from: `<${process.env.SMTP_USER}>`,

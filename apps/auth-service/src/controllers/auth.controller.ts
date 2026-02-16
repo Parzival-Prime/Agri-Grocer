@@ -243,10 +243,14 @@ export async function registerSeller(req: Request, res: Response, next: NextFunc
             return new ValidationError("Seller already exists with this email!")
         }
 
+        console.log('checking otp restrictions')
         await checkOtpRestrictions(email, next)
+        console.log('tracking otp requests')
         await trackOtpRequests(email, next)
+        console.log('sending otp')
         await sendOtp(name, email, "seller-activation-mail")
 
+        console.log('otp sent')
         res.status(200).json({
             message: "OTP sent to Email, Please verify your account."
         })
