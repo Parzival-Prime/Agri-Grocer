@@ -42,7 +42,7 @@ function HeaderBottom() {
         className={`w-[80%] relative m-auto flex items-center justify-between ${isSticky ? 'pt-3' : 'py-0'}`}
       >
         <div
-          className={`w-65 ${isSticky && '-mb-2'} cursor-pointer flex items-center justify-between px-5 h-12.5 bg-emerald-400 `}
+          className={`w-65 ${isSticky && '-mb-2'} cursor-pointer flex items-center justify-between px-5 h-12.5 bg-neutral-700 `}
           onClick={() => setShow((prev) => !prev)}
         >
           <div className="flex items-center gap-2">
@@ -66,6 +66,13 @@ function HeaderBottom() {
               {i.title}
             </Link>
           ))}
+          <Link
+              href={'https://nx-learning-2-vs52.vercel.app/signup'}
+              target='_blank'
+              className="px-5 font-medium text-lg"
+            >
+              Become a Seller
+            </Link>
         </div>
         {isSticky && (
           <>

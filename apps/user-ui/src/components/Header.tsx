@@ -36,7 +36,7 @@ function Header() {
     }
   }
   return (
-    <div className="w-full bg-amber-50 dark:bg-neutral-900 font-amarna">
+    <div className="w-full z-200 bg-amber-50 dark:bg-neutral-900 font-amarna">
       <div className="w-[80%] py-5 m-auto flex items-center justify-between">
         <Link href={'/'} className='flex gap-1'>
         <Image src="/logo.png" width={40} height={40} alt='logo' />
@@ -48,12 +48,12 @@ function Header() {
             value={searchQuery}
             onChange={(e)=>setSearchQuery(e.target.value)}
             placeholder="Search for products..."
-            className="w-full px-4 h-8 font-poppins font-medium border-[2.5px] border-emerald-400 rounded-md"
+            className="w-full px-4 h-8 font-poppins font-medium border border-neutral-600 rounded-md"
           />
-          <div className="w-11.25 cursor-pointer flex items-center justify-center h-8 bg-emerald-400 absolute top-0 right-0 rounded-r-md"
+          <div className="w-11.25 cursor-pointer flex items-center justify-center h-8 absolute top-0 right-0 rounded-r-md"
           onClick={handleSearchClick}
           >
-            <SearchIcon color="#ffff" />
+            <SearchIcon className='text-neutral-500' />
           </div>
           {suggestions.length > 0 && (
             <div className="absolute w-full top-15 bg-white border">
