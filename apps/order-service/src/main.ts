@@ -10,9 +10,8 @@ const app = express();
 app.post("/api/create-order", bodyParser.raw({ type: "application/json" }), (req, res, next) => {
   (req as any).rawBody = req.body;
   next();
-},
-  createOrder
-)
+}, createOrder)
+
 app.use(express.json())
 app.use(cookieParser())
 
