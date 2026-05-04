@@ -7,9 +7,7 @@ import jwt, { JsonWebTokenError } from "jsonwebtoken"
 import { setCookie } from "@auth-service/src/utils/cookies/setCookies";
 import Stripe from "stripe"
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-    apiVersion: "2026-02-25.clover"
-})
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {apiVersion: "2026-02-25.clover"})
 
 // User Controllers
 
@@ -23,7 +21,6 @@ export async function userRegistration(req: Request, res: Response, next: NextFu
         if (userExists) {
             return next(new ValidationError("User with this email already exists!"))
         }
-
         await checkOtpRestrictions(email, next)
         await trackOtpRequests(email, next)
         await sendOtp(name, email, "user-activation-mail")
