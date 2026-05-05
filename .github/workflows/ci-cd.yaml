@@ -95,7 +95,7 @@ jobs:
             echo "SMTP_HOST=${{ secrets.SMTP_HOST }}" >> .env
             echo "SMTP_SERVICE=${{ secrets.SMTP_SERVICE }}" >> .env
             echo "ACCESS_TOKEN_SECRET=${{ secrets.ACCESS_TOKEN_SECRET }}" >> .env
-            echo "REFRESH_TOKEN_SECRET=${{ secrets.REFRESH_TOKEN_SECRET }}" >>
+            echo "REFRESH_TOKEN_SECRET=${{ secrets.REFRESH_TOKEN_SECRET }}" >> .env
             echo "IMAGEKIT_PRIVATE_KEY=${{ secrets.IMAGEKIT_PRIVATE_KEY }}" >> .env
             echo "IMAGEKIT_PUBLIC_KEY=${{ secrets.IMAGEKIT_PUBLIC_KEY }}" >> .env
             echo "KAFKA_API_KEY=${{ secrets.KAFKA_API_KEY }}" >> .env
