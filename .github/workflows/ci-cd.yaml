@@ -106,6 +106,10 @@ jobs:
             echo "ORDER_SERVICE_URL=${{ secrets.ORDER_SERVICE_URL }}" >> .env
             echo "AUTH_SERVICE_URL=${{ secrets.AUTH_SERVICE_URL }}" >> .env
 
-            docker compose down --rmi all -v --remove-orphans
-            docker compose pull
+            docker compose down 
+            docker pull parzivalprime/api-gateway:latest
+            docker pull parzivalprime/auth-service:latest
+            docker pull parzivalprime/product-service:latest
+            docker pull parzivalprime/order-service:latest
+            docker pull parzivalprime/kafka-service:latest
             docker compose up -d
